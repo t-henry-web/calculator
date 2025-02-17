@@ -1,0 +1,46 @@
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  height: 500px;
+  width: 300px;
+  padding: 10px;
+}
+
+.display {
+  border: 1px solid black;
+  text-align: right;
+  font-size: 3em;
+  padding: 10px;
+  height: 50px;
+}
+
+.pad {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  width: 75%;
+  height: 100%;
+}
+
+.operators {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  height: 100%;
+}
+
+button {
+  flex: 1;
+  padding: 20px;
+  font-size: 1.5rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
