@@ -1,156 +1,176 @@
 // TODO:
-// Calculate and update display on second press of operator
-// Allow initial calculations with default displayed 0
-// Stop display from overflowing on 12+ digits. Round calculated figures
-// Add functionality to decimal, backspace buttons
+// When chaining functions together and dividing by zero, display shows "Infinity" instead of error message
+// Add functionality to decimal and backspace buttons
+// Prevent large numbers from overflowing display
+// Keyboard functionality
 
-// Change logic that after pressing operator second time. Perform equals calculation, set input1 to result
-
-
-// functions for basic operations
+// Basic operation functions
 function add(x, y) {
-	return parseFloat(x) + parseFloat(y);
+    console.log(`add function: ${x} + ${y}`);
+    return parseFloat(x) + parseFloat(y);
 }
+
 function subtract(x, y) {
-	return parseFloat(x) - parseFloat(y);
+    console.log(`subtract function: ${x} - ${y}`);
+    return parseFloat(x) - parseFloat(y);
 }
+
 function multiply(x, y) {
-	return parseFloat(x) * parseFloat(y);
+    console.log(`multiply function: ${x} * ${y}`);
+    return parseFloat(x) * parseFloat(y);
 }
+
 function divide(x, y) {
-	return parseFloat(x) / parseFloat(y);
+    console.log(`divide function: ${x} / ${y}`);
+    if (y === 0) {
+        return "Whoops! Division by zero";
+    }
+    return parseFloat(x) / parseFloat(y);
 }
 
-// function which calls one of the above functions on two numbers.
-function operate() {
-	switch (operation) {
-		case "+":
-			return add(oldInput, newInput);
-		case "-":
-			return subtract(oldInput, newInput);
-		case "*":
-			return multiply(oldInput, newInput);
-		case "/":
-			return divide(oldInput, newInput);
-	};
-};
+function operate(operator, x, y) {
+    console.log(`operate function: operator = ${operator}, x = ${x}, y = ${y}`);
+    switch (operator) {
+        case '+':
+            return add(x, y);
+        case '-':
+            return subtract(x, y);
+        case '*':
+            return multiply(x, y);
+        case '/':
+            return divide(x, y);
+        default:
+            return "ERROR";
+    }
+}
 
-// updates display
+// Function to handle all operator button presses
+function handleOperatorButton(operatorSymbol) {
+    console.log(`Button Pressed: ${operatorSymbol}`);
+    document.querySelector(".display").textContent = operatorSymbol;
+    console.log(`Before operation: inputOne = ${inputOne}, inputTwo = ${inputTwo}, currentDisplay = ${currentDisplay}, operator = ${operator}, operatorPressed = ${operatorPressed}`);
+
+    if (operatorPressed === false) {
+        operator = operatorSymbol;
+        inputOne = currentDisplay;
+        currentDisplay = "";
+    } else {
+        inputTwo = currentDisplay;
+        currentDisplay = operate(operator, inputOne, inputTwo);
+        document.querySelector(".display").textContent = parseFloat(currentDisplay);
+        operator = operatorSymbol;
+        inputOne = currentDisplay;
+        currentDisplay = "";
+    }
+
+    operatorPressed = true;
+    console.log(`After operation: inputOne = ${inputOne}, inputTwo = ${inputTwo}, currentDisplay = ${currentDisplay}, operator = ${operator}, operatorPressed = ${operatorPressed}`);
+}
+
+// Function to update the display
 function updateDisplay(value) {
-	currentDisplay += value;
-	display.textContent = parseFloat(currentDisplay);
+    console.log(`updateDisplay function: value = ${value}`);
+    currentDisplay += value;
+    document.querySelector(".display").textContent = parseFloat(currentDisplay);
+    console.log(`Updated currentDisplay: ${currentDisplay}`);
 }
 
-// variables to track inputs and operations
-let oldInput = 0;
-let newInput = "";
-let operation = "";
-let currentDisplay = "0";
-let operatorCount = 0;
-let lastPressed = "";
+// Function to clear display and variables
+function clear() {
+	console.log("Button Pressed: C");
+    currentDisplay = 0; // Reset the display
+    document.querySelector(".display").textContent = currentDisplay;
+    inputOne = "";
+    inputTwo = "";
+    operator = "";
+    operatorPressed = false; // Reset operatorPressed
+    console.log(`After clear: inputOne = ${inputOne}, inputTwo = ${inputTwo}, currentDisplay = ${currentDisplay}, operator = ${operator}, operatorPressed = ${operatorPressed}`);
+}
 
+// Initialise variables
+let inputOne = "";
+let inputTwo = "";
+let currentDisplay = 0;
+let operator = "";
+let operatorPressed = false;
 
-// update display text and set display to 0 if there's no value
-const display = document.querySelector(".display");
-display.textContent = parseFloat(currentDisplay) || "0";
+// Set the initial display to "0"
+document.querySelector(".display").textContent = "0";
+console.log(`Initial display set to: ${currentDisplay}`);
 
-// button presses
-const press1 = document.querySelector("#one");
-const press2 = document.querySelector("#two");
-const press3 = document.querySelector("#three");
-const press4 = document.querySelector("#four");
-const press5 = document.querySelector("#five");
-const press6 = document.querySelector("#six");
-const press7 = document.querySelector("#seven");
-const press8 = document.querySelector("#eight");
-const press9 = document.querySelector("#nine");
-const press0 = document.querySelector("#zero");
-const pressAdd = document.querySelector("#add");
-const pressSub = document.querySelector("#sub");
-const pressMult = document.querySelector("#mult");
-const pressDivide = document.querySelector("#divide");
-const pressEquals = document.querySelector("#equals");
-const pressClear = document.querySelector("#clear");
-const pressBack = document.querySelector("#back");
-const pressDecimal = document.querySelector("#decimal");
-
-// handle number buttons
-press1.addEventListener("click", () => {
-	updateDisplay("1");
+// Handle digit buttons
+document.querySelector("#seven").addEventListener("click", () => {
+    console.log("Button Pressed: 7");
+    updateDisplay("7");
 });
-press2.addEventListener("click", () => {
-  updateDisplay("2");
+document.querySelector("#eight").addEventListener("click", () => {
+    console.log("Button Pressed: 8");
+    updateDisplay("8");
 });
-press3.addEventListener("click", () => {
-  updateDisplay("3");
+document.querySelector("#nine").addEventListener("click", () => {
+    console.log("Button Pressed: 9");
+    updateDisplay("9");
 });
-press4.addEventListener("click", () => {
-  updateDisplay("4");;
+document.querySelector("#four").addEventListener("click", () => {
+    console.log("Button Pressed: 4");
+    updateDisplay("4");
 });
-press5.addEventListener("click", () => {
-  updateDisplay("5");
+document.querySelector("#five").addEventListener("click", () => {
+    console.log("Button Pressed: 5");
+    updateDisplay("5");
 });
-press6.addEventListener("click", () => {
-  updateDisplay("6");
+document.querySelector("#six").addEventListener("click", () => {
+    console.log("Button Pressed: 6");
+    updateDisplay("6");
 });
-press7.addEventListener("click", () => {
-  updateDisplay("7");
+document.querySelector("#one").addEventListener("click", () => {
+    console.log("Button Pressed: 1");
+    updateDisplay("1");
 });
-press8.addEventListener("click", () => {
-  updateDisplay("8");
+document.querySelector("#two").addEventListener("click", () => {
+    console.log("Button Pressed: 2");
+    updateDisplay("2");
 });
-press9.addEventListener("click", () => {
-  updateDisplay("9");
+document.querySelector("#three").addEventListener("click", () => {
+    console.log("Button Pressed: 3");
+    updateDisplay("3");
 });
-press0.addEventListener("click", () => {
-  updateDisplay("0");
-});
-// handle operator buttons
-pressAdd.addEventListener("click", () => {
-  pressOperator("+");
-});
-pressSub.addEventListener("click", () => {
-  pressOperator("-");
-});
-pressMult.addEventListener("click", () => {
-  pressOperator("*");
-});
-pressDivide.addEventListener("click", () => {
-  pressOperator("/");
+document.querySelector("#zero").addEventListener("click", () => {
+    console.log("Button Pressed: 0");
+    updateDisplay("0");
 });
 
-// press operation button
-function pressOperator(symbol) {
-	lastPressed = operator;
-	operation = symbol;
-	if (operatorCount === 0) {
-		oldInput = currentDisplay;
+// Handle operator buttons
+document.querySelector("#add").addEventListener("click", () => handleOperatorButton("+"));
+document.querySelector("#sub").addEventListener("click", () => handleOperatorButton("-"));
+document.querySelector("#mult").addEventListener("click", () => handleOperatorButton("*"));
+document.querySelector("#divide").addEventListener("click", () => handleOperatorButton("/"));
+
+// Handle equals button
+document.querySelector("#equals").addEventListener("click", () => {
+    console.log("Button Pressed: =");
+    console.log(`Before equals operation: inputOne = ${inputOne}, inputTwo = ${inputTwo}, currentDisplay = ${currentDisplay}, operator = ${operator}, operatorPressed = ${operatorPressed}`);
+   
+	if (operator === "/" && parseFloat(currentDisplay) === 0) {
+		clear()
+		alert("Whoops! Can't divide by 0!");
+    } else if (operatorPressed === false) {
+        inputOne = currentDisplay;
 		currentDisplay = "";
-		display.textContent = symbol;
-		operatorCount=1;
-	} else {
-		
-	}
-}
-
-// handle equals button
-pressEquals.addEventListener("click", () => {
-	if (operatorCount === 0) {
-		oldInput = currentDisplay;
-	} else {
-		newInput = currentDisplay;
-		currentDisplay = operate();
-		display.textContent = currentDisplay;
-		oldInput = currentDisplay;
-		currentDisplay = 0;
-	}
+    } else {
+        inputTwo = currentDisplay;
+        currentDisplay = operate(operator, inputOne, inputTwo);
+        document.querySelector(".display").textContent = currentDisplay;
+        inputOne = currentDisplay;
+		inputTwo = "";
+		operatorPressed = false;
+    }
+    console.log(`After equals operation: inputOne = ${inputOne}, inputTwo = ${inputTwo}, currentDisplay = ${currentDisplay}, operator = ${operator}, operatorPressed = ${operatorPressed}`);
 });
 
-pressClear.addEventListener("click", () => {
-	oldInput = 0;
-	newInput = "";
-	operation = "";
-	currentDisplay = "0";
-	operatorCount = 0;
-	display.textContent = currentDisplay || "0";
+// Handle clear button
+document.querySelector("#clear").addEventListener("click", () => {
+    clear();
 });
+
+
